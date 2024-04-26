@@ -23,7 +23,7 @@ internal fun Project.configureFeature() {
 private fun applyDependency(handler: DependencyHandler, libs: VersionCatalog) = with(handler){
     implementation(project(":domain:entity"))
     implementation(project(":domain:usecase"))
-
+    implementation(project(":core:navigation"))
 
     implementation(libs.findLibrary("hilt-compose").get())
 }

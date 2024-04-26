@@ -1,3 +1,4 @@
+import extention.implementation
 import plugin.configureAndroid
 import plugin.configureAndroidTest
 import plugin.configureCompose
@@ -13,3 +14,7 @@ configureAndroidTest()
 configureHilt()
 configureCompose()
 configureRoom()
+
+dependencies {
+    implementation(project(":core:navigation"))
+}
