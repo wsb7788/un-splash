@@ -17,3 +17,7 @@ configureHilt()
 configureNavigation()
 configureFeature()
 configurePagingCompose()
+
+dependencies {
+    implementation(project(":common:designsystem"))
+}

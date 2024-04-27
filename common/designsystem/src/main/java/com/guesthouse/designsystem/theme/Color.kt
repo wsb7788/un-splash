@@ -1,4 +1,4 @@
-package com.guesthouse.unsplash.ui.theme
+package com.guesthouse.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
