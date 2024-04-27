@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
@@ -32,6 +33,7 @@ import kotlinx.coroutines.delay
 fun UnSplashSearchBar(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    keyboardController: SoftwareKeyboardController?,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     label: @Composable (() -> Unit)? = null,
@@ -52,7 +54,7 @@ fun UnSplashSearchBar(
 ) {
 
     val searchText = remember { mutableStateOf("")}
-    val keyboardController = LocalSoftwareKeyboardController.current
+
 
     val keyboardAction = if(keyboardActions.onSearch != null){
         keyboardActions
@@ -77,7 +79,9 @@ fun UnSplashSearchBar(
 
     LaunchedEffect(key1 = searchText.value){
         delay(SEARCH_DELAY)
-        onValueChange(searchText.value)
+        if(searchText.value.isNotEmpty()){
+            onValueChange(searchText.value)
+        }
     }
 
     UnSplashTextField(
@@ -109,6 +113,5 @@ fun UnSplashSearchBar(
 @Preview
 fun UnSplashSearchBarPreview(){
     UnSplashTheme {
-        UnSplashSearchBar(onValueChange = {})
     }
 }
