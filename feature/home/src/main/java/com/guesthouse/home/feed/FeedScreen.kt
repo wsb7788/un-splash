@@ -1,10 +1,11 @@
 package com.guesthouse.home.feed
 
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,7 +20,6 @@ import coil.compose.AsyncImage
 import com.guesthouse.designsystem.component.UnSplashSearchBar
 import com.guesthouse.entity.Photo
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -29,8 +29,8 @@ internal fun FeedScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val uiState = viewModel.feedUiState.collectAsStateWithLifecycle()
 
-    val photos = remember(uiState.value.photos){
-        flow{
+    val photos = remember(uiState.value.photos) {
+        flow {
             emit(uiState.value.photos)
         }
     }.collectAsLazyPagingItems()
@@ -51,13 +51,20 @@ internal fun FeedScreen(
             )
         }
     ) {
-        LazyColumn(modifier = Modifier.padding(it).fillMaxHeight()) {
-            items(photos.itemCount) {
-                photos[it]?.let { photo ->
-                    PhotoItem(photo)
-                }
+
+        LazyVerticalStaggeredGrid(
+            modifier = Modifier.padding(top = it.calculateTopPadding() + 5.dp),
+            columns = StaggeredGridCells.Fixed(3),
+            verticalItemSpacing = 3.dp,
+            horizontalArrangement = Arrangement.spacedBy(3.dp)
+        ) {
+            items(
+                items = photos.itemSnapshotList.items,
+            ) { photo ->
+                PhotoItem(photo)
             }
         }
+
     }
 }
 
@@ -65,8 +72,7 @@ internal fun FeedScreen(
 fun PhotoItem(photo: Photo) {
     AsyncImage(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(100.dp),
+            .fillMaxWidth(),
         model = photo.url,
         contentDescription = null
     )
