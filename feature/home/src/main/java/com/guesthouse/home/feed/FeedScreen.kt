@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
+import com.guesthouse.designsystem.component.PhotoItem
 import com.guesthouse.designsystem.component.UnSplashSearchBar
 import com.guesthouse.entity.Photo
 import com.guesthouse.home.R
@@ -75,41 +76,13 @@ internal fun FeedScreen(
                 items = photos.itemSnapshotList.items,
             ) { photo ->
                 PhotoItem(
-                    photo = photo,
+                    photoUrl = photo.url,
+                    isLiked = photo.likedByUser,
+                    onPhotoClicked = {viewModel.onPhotoClicked( photo.id, photo.likedByUser) }
                     )
             }
         }
 
     }
 }
-
-@Composable
-fun PhotoItem(photo: Photo) {
-
-    AsyncImage(
-        modifier = Modifier
-            .fillMaxWidth(),
-        model = photo.url,
-        contentDescription = null
-    )
-    Box(
-        modifier = Modifier.padding(10.dp),
-        contentAlignment = Alignment.TopEnd
-    ) {
-        if (photo.likedByUser) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "",
-                tint = Color.Red
-            )
-        } else {
-            Icon(
-                imageVector = Icons.Default.FavoriteBorder,
-                contentDescription = "",
-            )
-        }
-
-    }
-
-
 }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_icon">Search Icon</string>
+    <string name="photo_like_button">Photo like button</string>
 </resources>

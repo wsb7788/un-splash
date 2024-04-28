@@ -1,5 +1,6 @@
 import plugin.configureAndroid
 import plugin.configureAndroidTest
+import plugin.configureCoil
 import plugin.configureCompose
 import plugin.configureFeature
 
@@ -10,3 +11,4 @@ plugins {
 configureAndroid()
 configureAndroidTest()
 configureCompose()
+configureCoil()
