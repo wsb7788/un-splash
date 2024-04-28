@@ -67,7 +67,7 @@ internal fun FeedScreen(
 private fun LazyGridPhotoList(
     paddingValues: PaddingValues,
     photos: LazyPagingItems<Photo>,
-    onPhotoClicked: (String, Boolean) -> Unit
+    onPhotoClicked: (Photo) -> Unit
 ) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier
@@ -82,7 +82,7 @@ private fun LazyGridPhotoList(
             PhotoItem(
                 photoUrl = photo.url,
                 isLiked = photo.likedByUser,
-                onPhotoClicked = { onPhotoClicked(photo.id, photo.likedByUser) }
+                onPhotoClicked = { onPhotoClicked(photo) }
             )
         }
     }

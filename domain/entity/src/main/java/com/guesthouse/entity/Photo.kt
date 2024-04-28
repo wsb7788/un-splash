@@ -9,4 +9,8 @@ data class Photo(
     val id: String,
     val url: String,
     val likedByUser: Boolean
-)
+){
+    fun toLikedPhoto(): LikedPhoto {
+        return LikedPhoto(id = id, url = url)
+    }
+}

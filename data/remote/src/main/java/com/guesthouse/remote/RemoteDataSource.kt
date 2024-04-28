@@ -15,7 +15,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.put
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class RemoteDataSource @Inject constructor(
     private val networkHandler: NetworkHandler,
 ) {
@@ -36,4 +38,5 @@ class RemoteDataSource @Inject constructor(
             }
         ).collect { emit(it) }
     }
+
 }
