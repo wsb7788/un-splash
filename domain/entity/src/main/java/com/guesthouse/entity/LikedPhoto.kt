@@ -4,9 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Photo(
+data class LikedPhoto(
     @PrimaryKey
     val id: String,
     val url: String,
-    val likedByUser: Boolean
 )

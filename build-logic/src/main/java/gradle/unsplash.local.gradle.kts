@@ -1,15 +1,15 @@
 import extention.implementation
-import org.gradle.kotlin.dsl.project
-import plugin.configureAndroid
 import plugin.configureInject
 import plugin.configureKotlin
-import plugin.configureRoom
+import plugin.configurePagingCommon
 import plugin.configureRoomCommon
 
 configureKotlin()
 configureRoomCommon()
+configurePagingCommon()
 configureInject()
 
 dependencies {
     implementation(project(":data:model"))
+    implementation(project(":domain:entity"))
 }

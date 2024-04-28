@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.guesthouse.navigation.HomeGraphRoute
 
 @Composable
@@ -32,7 +33,7 @@ fun HomeRoute(
             BottomNavigationBar(
                 currentRoute = currentRoute,
                 onNavigationItemClicked = { route ->
-                    navController.navigate(route)
+                    navController.navigate( route, navOptions { this.restoreState= true } )
                 },
             )
         },
