@@ -7,9 +7,6 @@ import androidx.paging.RemoteMediator
 import com.guesthouse.entity.Photo
 import com.guesthouse.local.LocalDataSource
 import com.guesthouse.remote.RemoteDataSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 
 @OptIn(ExperimentalPagingApi::class)
@@ -47,10 +44,8 @@ class PhotoRemoteMediator(
             ).first()
 
             if((response.total ?: 0) != 0){
-                CoroutineScope(Dispatchers.IO).async {
-                    localDataSource.deleteAllPhotos()
-                    localDataSource.insertPhoto(*response.toPhotos().toTypedArray())
-                }.await()
+                localDataSource.deleteAllPhotos()
+                localDataSource.insertPhoto(*response.toPhotos().toTypedArray())
             }
 
             return MediatorResult.Success(endOfPaginationReached = currentPage == response.totalPages)
@@ -71,9 +66,7 @@ class PhotoRemoteMediator(
                 perPage = PER_PAGE
             ).first()
 
-            CoroutineScope(Dispatchers.IO).async {
-                localDataSource.insertPhoto(*response.toPhotos().toTypedArray())
-            }.await()
+            localDataSource.insertPhoto(*response.toPhotos().toTypedArray())
 
             return MediatorResult.Success(endOfPaginationReached = currentPage == response.totalPages)
 

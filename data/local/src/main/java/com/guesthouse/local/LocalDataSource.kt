@@ -5,6 +5,9 @@ import com.guesthouse.entity.LikedPhoto
 import com.guesthouse.entity.Photo
 import com.guesthouse.local.dao.LikedPhotoDao
 import com.guesthouse.local.dao.PhotoDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,22 +27,30 @@ class LocalDataSource @Inject constructor(
         emit(Unit)
     }
 
-    private fun insertLikedPhoto(likedPhoto: LikedPhoto){
-        likedPhotoDao.insert(likedPhoto)
-        photoDao.like(likedPhoto.id)
+    private suspend fun insertLikedPhoto(likedPhoto: LikedPhoto) {
+        CoroutineScope(Dispatchers.IO).async {
+            likedPhotoDao.insert(likedPhoto)
+            photoDao.like(likedPhoto.id)
+        }.await()
     }
 
-    fun deleteLikedPhoto(id: String){
-        likedPhotoDao.delete(id)
-        photoDao.unLike(id)
+    suspend fun deleteLikedPhoto(id: String) {
+        CoroutineScope(Dispatchers.IO).async {
+            likedPhotoDao.delete(id)
+            photoDao.unLike(id)
+        }.await()
     }
 
-    fun deleteAllPhotos(){
-        photoDao.deleteAll()
+    suspend fun deleteAllPhotos(){
+        CoroutineScope(Dispatchers.IO).async {
+            photoDao.deleteAll()
+        }.await()
     }
 
-    fun insertPhoto(vararg photo: Photo){
-        photoDao.insert(*photo)
+    suspend fun insertPhoto(vararg photo: Photo){
+        CoroutineScope(Dispatchers.IO).async {
+            photoDao.insert(*photo)
+        }.await()
     }
 
     fun getPhotos(): PagingSource<Int, Photo> {

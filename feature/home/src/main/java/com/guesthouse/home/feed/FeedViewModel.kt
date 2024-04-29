@@ -39,13 +39,11 @@ internal class FeedViewModel @Inject constructor(
     }
 
     fun onPhotoClicked(photo: Photo) {
-        //1. api 요청으로 확인
-        //2. db에 저장. 두 개의 테이블 안에 저장해야 함.
         postLikePhoto(
             photo = photo.copy(
                 likedByUser = !photo.likedByUser
             )
-        )
+        ).launchIn(viewModelScope)
     }
 
 }
