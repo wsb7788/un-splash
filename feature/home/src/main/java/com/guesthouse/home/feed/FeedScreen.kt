@@ -8,13 +8,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.guesthouse.designsystem.component.PhotoItem
@@ -22,13 +21,13 @@ import com.guesthouse.designsystem.component.UnSplashSearchBar
 import com.guesthouse.entity.Photo
 import kotlinx.coroutines.flow.flow
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun FeedScreen(
-    viewModel: FeedViewModel = hiltViewModel()
+    uiState: State<FeedUiState>,
+    onTextChanged: (String) -> Unit,
+    onPhotoClicked: (Photo) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val uiState = viewModel.feedUiState.collectAsStateWithLifecycle()
 
     val photos = remember(uiState.value.photos) {
         flow {
@@ -45,19 +44,16 @@ internal fun FeedScreen(
             ),
         topBar = {
             UnSplashSearchBar(
-                onValueChange = {
-                    viewModel.onSearchTextChanged(it)
-                },
+                onValueChange = onTextChanged,
                 keyboardController = keyboardController,
             )
         }
     ) { paddingValues ->
-        println(photos.itemCount)
 
         LazyGridPhotoList(
             paddingValues = paddingValues,
             photos = photos,
-            onPhotoClicked = viewModel::onPhotoClicked
+            onPhotoClicked = onPhotoClicked
         )
 
     }
