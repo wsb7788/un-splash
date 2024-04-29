@@ -11,6 +11,7 @@ configureInject()
 dependencies {
     implementation(project(":data:local"))
     implementation(project(":data:remote"))
+    implementation(project(":data:model"))
     implementation(project(":domain:repository"))
     implementation(project(":domain:entity"))
 }

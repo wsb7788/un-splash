@@ -7,7 +7,7 @@ import com.guesthouse.entity.Photo
 import com.guesthouse.local.dao.LikedPhotoDao
 import com.guesthouse.local.dao.PhotoDao
 
-@Database(entities = [LikedPhoto::class, Photo::class], version = 1)
+@Database(entities = [LikedPhoto::class, Photo::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun getPhotoDao(): PhotoDao
     abstract fun getLikedPhotoDao(): LikedPhotoDao

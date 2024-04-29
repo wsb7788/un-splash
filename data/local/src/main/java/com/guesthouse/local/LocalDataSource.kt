@@ -1,5 +1,6 @@
 package com.guesthouse.local
 
+import androidx.paging.PagingSource
 import com.guesthouse.entity.LikedPhoto
 import com.guesthouse.entity.Photo
 import com.guesthouse.local.dao.LikedPhotoDao
@@ -35,6 +36,14 @@ class LocalDataSource @Inject constructor(
 
     fun deleteAllPhotos(){
         photoDao.deleteAll()
+    }
+
+    fun insertPhoto(vararg photo: Photo){
+        photoDao.insert(*photo)
+    }
+
+    fun getPhotos(): PagingSource<Int, Photo> {
+        return photoDao.getPhotos()
     }
 
 }

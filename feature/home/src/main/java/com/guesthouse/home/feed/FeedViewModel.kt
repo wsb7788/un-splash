@@ -1,29 +1,24 @@
 package com.guesthouse.home.feed
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.guesthouse.entity.Photo
+import com.guesthouse.usecase.LikePhotoUseCase
 import com.guesthouse.usecase.SearchPhotoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class FeedViewModel @Inject constructor(
     private val getPhotos: SearchPhotoUseCase,
+    private val postLikePhoto: LikePhotoUseCase,
 ) : ViewModel() {
 
     private val _feedUiState: MutableStateFlow<FeedUiState> = MutableStateFlow(FeedUiState())
@@ -41,6 +36,16 @@ internal class FeedViewModel @Inject constructor(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    fun onPhotoClicked(photo: Photo) {
+        //1. api 요청으로 확인
+        //2. db에 저장. 두 개의 테이블 안에 저장해야 함.
+        postLikePhoto(
+            photo = photo.copy(
+                likedByUser = !photo.likedByUser
+            )
+        )
     }
 
 }

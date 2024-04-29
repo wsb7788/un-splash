@@ -1,8 +1,9 @@
-import extention.implementation
 import plugin.configureAndroid
 import plugin.configureAndroidTest
 import plugin.configureCompose
 import plugin.configureHilt
+import plugin.configureKotlinTest
+import plugin.configurePagingCommon
 import plugin.configureRoom
 
 plugins {
@@ -11,10 +12,8 @@ plugins {
 
 configureAndroid()
 configureAndroidTest()
+configureKotlinTest()
 configureHilt()
 configureCompose()
 configureRoom()
-
-dependencies {
-    implementation(project(":core:navigation"))
-}
+configurePagingCommon()

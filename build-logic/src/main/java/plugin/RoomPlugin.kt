@@ -32,6 +32,7 @@ private fun applyPlugin(manager: PluginManager, libs: VersionCatalog) = with(man
 private fun applyDependency(handler: DependencyHandler, libs: VersionCatalog) = with(handler){
     implementation(libs.findLibrary("room-runtime").get())
     implementation(libs.findLibrary("room-ktx").get())
+    implementation(libs.findLibrary("room-paging").get())
     kapt(libs.findLibrary("room-compiler").get())
 }
 

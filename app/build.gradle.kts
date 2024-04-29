@@ -52,6 +52,8 @@ dependencies {
     implementation(project(":data:repository"))
     implementation(project(":data:local"))
     implementation(project(":data:remote"))
+    implementation(project(":data:model"))
+    implementation(project(":core:navigation"))
 
     implementation(project(":common:designsystem"))
 }

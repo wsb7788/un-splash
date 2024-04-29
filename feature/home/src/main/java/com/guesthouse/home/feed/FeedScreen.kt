@@ -52,7 +52,7 @@ internal fun FeedScreen(
             )
         }
     ) { paddingValues ->
-
+        println(photos.itemCount)
 
         LazyGridPhotoList(
             paddingValues = paddingValues,

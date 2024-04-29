@@ -20,6 +20,5 @@ internal fun Project.configureKotlinTest() {
 }
 
 private fun applyDependency(handler: DependencyHandler, libs: VersionCatalog) = with(handler) {
-    testImplementation(libs.findLibrary("androidx-junit").get())
-    testImplementation(libs.findBundle("kotest").get())
+    testImplementation(libs.findLibrary("junit").get())
 }

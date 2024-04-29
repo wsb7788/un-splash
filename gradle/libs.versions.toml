@@ -69,6 +69,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-common = { group = "androidx.room", name = "room-common", version.ref = "room" }
+room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 
 # paging
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
