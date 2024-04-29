@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface UnSplashRepository {
     fun getSearchPhotos(query: String): Flow<PagingData<Photo>>
-    fun postLikePhoto(photo: Photo): Flow<Unit>
-    fun postUnLikePhoto(id: String): Flow<Unit>
+    fun updatePhotoLiked(photo: Photo): Flow<Unit>
+    fun deleteUnLikePhoto(id: String): Flow<Unit>
 }

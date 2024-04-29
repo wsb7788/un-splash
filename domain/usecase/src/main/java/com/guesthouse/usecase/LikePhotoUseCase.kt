@@ -1,6 +1,5 @@
 package com.guesthouse.usecase
 
-import com.guesthouse.entity.LikedPhoto
 import com.guesthouse.entity.Photo
 import com.guesthouse.repository.UnSplashRepository
 import javax.inject.Inject
@@ -11,6 +10,6 @@ class LikePhotoUseCase @Inject constructor(
     private val unSplashRepository: UnSplashRepository
 ) {
 
-    operator fun invoke(photo: Photo) = unSplashRepository.postLikePhoto(photo)
+    operator fun invoke(photo: Photo) = unSplashRepository.updatePhotoLiked(photo)
 
 }

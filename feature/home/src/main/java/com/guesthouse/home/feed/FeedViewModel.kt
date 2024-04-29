@@ -7,6 +7,8 @@ import com.guesthouse.entity.Photo
 import com.guesthouse.usecase.LikePhotoUseCase
 import com.guesthouse.usecase.SearchPhotoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,11 +46,7 @@ internal class FeedViewModel @Inject constructor(
             photo = photo.copy(
                 likedByUser = !photo.likedByUser
             )
-        )
-            .onEach {
-                println("zzz")
-            }
-            .launchIn(viewModelScope)
+        ).launchIn(viewModelScope)
     }
 
 }

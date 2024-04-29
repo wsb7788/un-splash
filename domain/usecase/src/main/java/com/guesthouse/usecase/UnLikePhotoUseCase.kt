@@ -9,5 +9,5 @@ import javax.inject.Singleton
 class UnLikePhotoUseCase @Inject constructor(
    private val unSplashRepository: UnSplashRepository
 ) {
-    operator fun invoke(id: String): Flow<Unit> = unSplashRepository.postUnLikePhoto(id)
+    operator fun invoke(id: String): Flow<Unit> = unSplashRepository.deleteUnLikePhoto(id)
 }

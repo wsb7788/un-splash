@@ -10,7 +10,6 @@ import com.guesthouse.remote.RemoteDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import javax.inject.Inject
@@ -29,15 +28,20 @@ class UnSplashRepositoryImpl @Inject constructor(
             pagingSourceFactory = { localDataSource.getPhotos() }
         ).flow
 
-    override fun postLikePhoto(photo: Photo): Flow<Unit> = flow {
-        println("postLikePhoto")
-        localDataSource.updatePhoto(photo = photo)
-        remoteDataSource.postLikePhoto(id = photo.id).launchIn(CoroutineScope(Dispatchers.IO))
+    override fun updatePhotoLiked(photo: Photo): Flow<Unit> = flow {
+
+        localDataSource.updatePhoto(photo = photo).launchIn(CoroutineScope(Dispatchers.IO))
+        if(photo.likedByUser){
+            remoteDataSource.postLikePhoto(id = photo.id).launchIn(CoroutineScope(Dispatchers.IO))
+        }else{
+            remoteDataSource.deleteLikePhoto(id = photo.id).launchIn(CoroutineScope(Dispatchers.IO))
+        }
+
     }
 
-    override fun postUnLikePhoto(id: String): Flow<Unit> = flow {
-        localDataSource.deleteLikedPhoto(id)
-        remoteDataSource.deleteLikePhoto(id = id)
+    override fun deleteUnLikePhoto(id: String): Flow<Unit> = flow {
+        localDataSource.deleteLikedPhoto(id = id)
+        remoteDataSource.deleteLikePhoto(id = id).launchIn(CoroutineScope(Dispatchers.IO))
     }
 
 }

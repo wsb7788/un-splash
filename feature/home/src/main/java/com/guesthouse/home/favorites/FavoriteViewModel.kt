@@ -14,18 +14,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val postUnLikePhoto: UnLikePhotoUseCase,
+    private val deleteUnLikePhoto: UnLikePhotoUseCase,
 ): ViewModel() {
 
     private val _uiState: MutableStateFlow<FavoriteUiState> = MutableStateFlow(FavoriteUiState())
     val uiState: StateFlow<FavoriteUiState> = _uiState.asStateFlow()
 
     fun onLikedPhotoClicked(likedPhoto: LikedPhoto) {
-        postUnLikePhoto(
+        deleteUnLikePhoto(
             id = likedPhoto.id
-        ).onEach {
-            println("asdf")
-        }
+        )
             .launchIn(viewModelScope)
     }
 

@@ -31,8 +31,8 @@ class LocalDataSource @Inject constructor(
 
     private suspend fun insertLikedPhoto(likedPhoto: LikedPhoto) {
         CoroutineScope(Dispatchers.IO).async {
-        likedPhotoDao.insert(likedPhoto)
-        photoDao.like(likedPhoto.id)
+            likedPhotoDao.insert(likedPhoto)
+            photoDao.like(likedPhoto.id)
         }.await()
     }
 
