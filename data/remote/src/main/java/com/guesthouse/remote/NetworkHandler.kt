@@ -38,21 +38,13 @@ class NetworkHandler @Inject constructor(
 
 ) {
 
-    lateinit var accessToken: String
-        private set
-    var isTokenRefreshing = false
-
-    fun setAccessToken(accessToken: String) {
-        this.accessToken = accessToken
-    }
-
     val client: HttpClient
         get() = HttpClient(CIO) {
 
             defaultRequest {
                 headers {
-                    append("Accept-Version", "v1")
-                    bearerAuth("pepyOeWCN84z4raufbn1kxi_adeqjz9IhvlUl13C2b0")
+                    append("Accept-Version", ACCEPT_VERSION)
+                    bearerAuth(ACCESS_TOKEN)
                 }
             }
 
@@ -87,7 +79,6 @@ class NetworkHandler @Inject constructor(
     @OptIn(InternalAPI::class)
     inline fun <reified T> request(
         method: HttpMethod,
-        isAccessTokenNeeded: Boolean = true,
         crossinline url: URLBuilder.() -> Unit,
         noinline parameter: (HttpRequestBuilder.() -> Unit)? = null,
         noinline content: (JsonObjectBuilder.() -> Unit)? = null,
@@ -96,17 +87,10 @@ class NetworkHandler @Inject constructor(
             val request: suspend () -> HttpResponse? = {
                 client.request {
                     this.method = method
-                    /*if (isAccessTokenNeeded) {
-                        headers {
-                            append(
-                                name = AUTHORIZATION,
-                                value = "$BEARER $accessToken"
-                            )
-                        }
-                    }*/
+
                     url {
                         protocol = URLProtocol.HTTPS
-                        host = "api.unsplash.com"
+                        host = BASE_URL
                         url()
                         parameter?.let{
                             it()
@@ -124,41 +108,21 @@ class NetworkHandler @Inject constructor(
             request()?.let { response ->
                 if (response.status.value in SUCCESS_RANGE) {
                     emit(response.body())
-                /*} else if(response.status == Unauthorized && !isTokenRefreshing) {
-                    isTokenRefreshing = true
-                    val isAccessTokenRefreshed = getAccessToken()
-                    if (isAccessTokenRefreshed) {
-                        isTokenRefreshing = false
-                        requestDeferredCall()
-                    }
-*/
                 } else {
-                    emit(response.body())
+                    throw Exception(response.status.description)
                 }
             }
         }
 
     }
-   /* suspend fun getAccessToken(): Boolean {
-            val refreshedToken = request<AccessTokenResponse>(
-                method = HttpMethod.Get,
-                isAccessTokenNeeded = false,
-                url = { path(AUTH, REFRESH) },
-                content = { append(REFRESH_TOKEN, refreshToken) }
-            ).first().data?.accessToken ?: ""
-
-            this.accessToken = refreshedToken
-            return refreshedToken.isNotEmpty()
-        }
-
-        return false
-    }*/
 
     companion object {
         private const val REQUEST_TIMEOUT = 600000L
         private const val RETRY_COUNT = 3
         private const val CONNECT_TIMEOUT = 10000L
         const val BASE_URL = "api.unsplash.com"
+        private const val ACCEPT_VERSION = "v1"
+        private const val ACCESS_TOKEN = "pepyOeWCN84z4raufbn1kxi_adeqjz9IhvlUl13C2b0"
 
         val SUCCESS_RANGE = 200..299
     }
