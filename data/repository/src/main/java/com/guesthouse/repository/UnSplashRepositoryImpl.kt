@@ -7,7 +7,12 @@ import androidx.paging.PagingData
 import com.guesthouse.entity.Photo
 import com.guesthouse.local.LocalDataSource
 import com.guesthouse.remote.RemoteDataSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import javax.inject.Inject
 
 class UnSplashRepositoryImpl @Inject constructor(
@@ -24,7 +29,15 @@ class UnSplashRepositoryImpl @Inject constructor(
             pagingSourceFactory = { localDataSource.getPhotos() }
         ).flow
 
-    override fun postLikePhoto(photo: Photo) =
-        localDataSource.updatePhoto(photo)
+    override fun postLikePhoto(photo: Photo): Flow<Unit> = flow {
+        println("postLikePhoto")
+        localDataSource.updatePhoto(photo = photo)
+        remoteDataSource.postLikePhoto(id = photo.id).launchIn(CoroutineScope(Dispatchers.IO))
+    }
+
+    override fun postUnLikePhoto(id: String): Flow<Unit> = flow {
+        localDataSource.deleteLikedPhoto(id)
+        remoteDataSource.deleteLikePhoto(id = id)
+    }
 
 }

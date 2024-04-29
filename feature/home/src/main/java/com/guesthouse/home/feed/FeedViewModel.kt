@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
@@ -43,7 +44,11 @@ internal class FeedViewModel @Inject constructor(
             photo = photo.copy(
                 likedByUser = !photo.likedByUser
             )
-        ).launchIn(viewModelScope)
+        )
+            .onEach {
+                println("zzz")
+            }
+            .launchIn(viewModelScope)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.guesthouse.usecase
 
+import com.guesthouse.entity.LikedPhoto
 import com.guesthouse.entity.Photo
 import com.guesthouse.repository.UnSplashRepository
 import javax.inject.Inject

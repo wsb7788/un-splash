@@ -9,5 +9,9 @@ internal fun FavoritesRoute(
     viewModel: FavoriteViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-    FavoritesScreen(uiState = uiState)
+
+    FavoritesScreen(
+        uiState = uiState,
+        onPhotoClicked = viewModel::onLikedPhotoClicked
+    )
 }

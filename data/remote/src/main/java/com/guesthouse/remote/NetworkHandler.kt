@@ -11,11 +11,13 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.parameter
 import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode.Companion.Unauthorized
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
@@ -50,6 +52,7 @@ class NetworkHandler @Inject constructor(
             defaultRequest {
                 headers {
                     append("Accept-Version", "v1")
+                    bearerAuth("pepyOeWCN84z4raufbn1kxi_adeqjz9IhvlUl13C2b0")
                 }
             }
 
@@ -86,7 +89,7 @@ class NetworkHandler @Inject constructor(
         method: HttpMethod,
         isAccessTokenNeeded: Boolean = true,
         crossinline url: URLBuilder.() -> Unit,
-        crossinline parameter: HttpRequestBuilder.() -> Unit,
+        noinline parameter: (HttpRequestBuilder.() -> Unit)? = null,
         noinline content: (JsonObjectBuilder.() -> Unit)? = null,
     ): Flow<T> = flow {
         client.use { client ->
@@ -105,8 +108,9 @@ class NetworkHandler @Inject constructor(
                         protocol = URLProtocol.HTTPS
                         host = "api.unsplash.com"
                         url()
-                        parameter("client_id", "2CyWpP04Dj-0x0UYj4JvQEa8xRzYqLfInpGOBIduXbM")
-                        parameter()
+                        parameter?.let{
+                            it()
+                        }
                     }
                     content?.let {
                         contentType(ContentType.Application.Json)
@@ -120,13 +124,35 @@ class NetworkHandler @Inject constructor(
             request()?.let { response ->
                 if (response.status.value in SUCCESS_RANGE) {
                     emit(response.body())
+                /*} else if(response.status == Unauthorized && !isTokenRefreshing) {
+                    isTokenRefreshing = true
+                    val isAccessTokenRefreshed = getAccessToken()
+                    if (isAccessTokenRefreshed) {
+                        isTokenRefreshing = false
+                        requestDeferredCall()
+                    }
+*/
                 } else {
-                    //todo 오류 처리
                     emit(response.body())
                 }
             }
         }
+
     }
+   /* suspend fun getAccessToken(): Boolean {
+            val refreshedToken = request<AccessTokenResponse>(
+                method = HttpMethod.Get,
+                isAccessTokenNeeded = false,
+                url = { path(AUTH, REFRESH) },
+                content = { append(REFRESH_TOKEN, refreshToken) }
+            ).first().data?.accessToken ?: ""
+
+            this.accessToken = refreshedToken
+            return refreshedToken.isNotEmpty()
+        }
+
+        return false
+    }*/
 
     companion object {
         private const val REQUEST_TIMEOUT = 600000L

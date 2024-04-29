@@ -8,7 +8,9 @@ import com.guesthouse.local.dao.PhotoDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,10 +20,10 @@ class LocalDataSource @Inject constructor(
     private val photoDao: PhotoDao,
 ) {
 
-    fun updatePhoto(photo: Photo) = flow {
-        if(photo.likedByUser){
+    fun updatePhoto(photo: Photo): Flow<Unit> = flow {
+        if (photo.likedByUser) {
             insertLikedPhoto(photo.toLikedPhoto())
-        }else{
+        } else {
             deleteLikedPhoto(photo.id)
         }
         emit(Unit)
@@ -29,8 +31,8 @@ class LocalDataSource @Inject constructor(
 
     private suspend fun insertLikedPhoto(likedPhoto: LikedPhoto) {
         CoroutineScope(Dispatchers.IO).async {
-            likedPhotoDao.insert(likedPhoto)
-            photoDao.like(likedPhoto.id)
+        likedPhotoDao.insert(likedPhoto)
+        photoDao.like(likedPhoto.id)
         }.await()
     }
 
@@ -41,13 +43,14 @@ class LocalDataSource @Inject constructor(
         }.await()
     }
 
-    suspend fun deleteAllPhotos(){
+
+    suspend fun deleteAllPhotos() {
         CoroutineScope(Dispatchers.IO).async {
             photoDao.deleteAll()
         }.await()
     }
 
-    suspend fun insertPhoto(vararg photo: Photo){
+    suspend fun insertPhoto(vararg photo: Photo) {
         CoroutineScope(Dispatchers.IO).async {
             photoDao.insert(*photo)
         }.await()
