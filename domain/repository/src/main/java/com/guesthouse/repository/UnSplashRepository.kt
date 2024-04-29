@@ -9,4 +9,5 @@ interface UnSplashRepository {
     fun getSearchPhotos(query: String): Flow<PagingData<Photo>>
     fun updatePhotoLiked(photo: Photo): Flow<Unit>
     fun deleteUnLikePhoto(id: String): Flow<Unit>
+    fun getLikedPhotos(): Flow<PagingData<LikedPhoto>>
 }

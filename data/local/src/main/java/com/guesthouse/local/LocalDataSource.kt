@@ -60,4 +60,8 @@ class LocalDataSource @Inject constructor(
         return photoDao.getPhotos()
     }
 
+    fun getLikedPhotos(): PagingSource<Int, LikedPhoto> {
+        return likedPhotoDao.getPhotos()
+    }
+
 }

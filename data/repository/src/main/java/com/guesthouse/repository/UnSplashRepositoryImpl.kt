@@ -4,6 +4,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.guesthouse.entity.LikedPhoto
 import com.guesthouse.entity.Photo
 import com.guesthouse.local.LocalDataSource
 import com.guesthouse.remote.RemoteDataSource
@@ -43,5 +44,14 @@ class UnSplashRepositoryImpl @Inject constructor(
         localDataSource.deleteLikedPhoto(id = id)
         remoteDataSource.deleteLikePhoto(id = id).launchIn(CoroutineScope(Dispatchers.IO))
     }
+
+    override fun getLikedPhotos(): Flow<PagingData<LikedPhoto>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 30,
+            ),
+            pagingSourceFactory = { localDataSource.getLikedPhotos() }
+        ).flow
+
 
 }
