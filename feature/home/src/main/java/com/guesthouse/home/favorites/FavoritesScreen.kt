@@ -1,22 +1,26 @@
 package com.guesthouse.home.favorites
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.guesthouse.designsystem.component.PhotoItem
-import com.guesthouse.designsystem.component.UnSplashTextField
 import com.guesthouse.entity.LikedPhoto
 import kotlinx.coroutines.flow.flow
 
@@ -41,9 +45,17 @@ internal fun FavoritesScreen(
                 end = 10.dp
             ),
         topBar = {
-            TopAppBar(title = {
-                UnSplashTextField(value = "좋아요 남긴 목록")
-            })
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.1f),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                Text(
+                    text = "좋아요 남긴 목록",
+                    fontSize = 20.sp,
+                )
+            }
         }
     ) { paddingValues ->
 
