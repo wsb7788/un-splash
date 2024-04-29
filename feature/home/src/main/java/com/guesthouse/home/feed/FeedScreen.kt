@@ -1,7 +1,6 @@
 package com.guesthouse.home.feed
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -10,7 +9,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
@@ -51,7 +49,8 @@ internal fun FeedScreen(
     ) { paddingValues ->
 
         LazyGridPhotoList(
-            paddingValues = paddingValues,
+            modifier = Modifier
+                .padding(top = paddingValues.calculateTopPadding() + 5.dp),
             photos = photos,
             onPhotoClicked = onPhotoClicked
         )
@@ -61,13 +60,12 @@ internal fun FeedScreen(
 
 @Composable
 private fun LazyGridPhotoList(
-    paddingValues: PaddingValues,
+    modifier: Modifier = Modifier,
     photos: LazyPagingItems<Photo>,
     onPhotoClicked: (Photo) -> Unit
 ) {
     LazyVerticalStaggeredGrid(
-        modifier = Modifier
-            .padding(top = paddingValues.calculateTopPadding() + 5.dp),
+        modifier = modifier,
         columns = StaggeredGridCells.Fixed(3),
         verticalItemSpacing = 3.dp,
         horizontalArrangement = Arrangement.spacedBy(3.dp)

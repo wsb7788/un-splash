@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun UnSplashTextField(
     value: String,
-    onValueChange: (String) -> Unit,
+    onValueChange: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
